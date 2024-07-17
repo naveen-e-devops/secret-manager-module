@@ -41,6 +41,22 @@ resource "aws_secretsmanager_secret_policy" "policy" {
           }
         }
       },
+       {
+        Effect = "Deny"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = aws_secretsmanager_secret.secret.arn
+        Principal = {
+          AWS = "*"
+        }
+        Condition = {
+          StringNotLike = {
+            "aws:userId" = var.users_with_read_access
+            "aws:PrincipalArn" = var.iam_roles_read_access
+          }
+        }
+      },
       {
         Effect = "Allow"
         Action = [
