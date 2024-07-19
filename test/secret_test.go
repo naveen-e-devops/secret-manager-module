@@ -13,7 +13,7 @@ func TestSecretManager(t *testing.T) {
 		TerraformDir: "../examples/secret-manager",
 	})
 
-	defer terraform.Destroy(t, terraformOptions)
+	//defer terraform.Destroy(t, terraformOptions)
 
 	terraform.InitAndApply(t, terraformOptions)
 }

@@ -1,9 +1,3 @@
-variable "stages" {
-  type        = set(string)
-  description = "List of stages to create resource"
-  default     = ["dev", "stage", "hfe"]
-}
-
 variable "description" {
   description = "Description of the secret"
   type        = string
@@ -38,7 +32,8 @@ variable "secret_name" {
     default = ""
 }
 
-variable "stage" {
-  description = "Stage name"
-  type        = string
-}
+# variable "devops_ids" {
+#   type        = set(string)
+#   description = "List of devops email ids"
+#   default     = ["naveen", "siraj"]
+# }

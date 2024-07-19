@@ -8,6 +8,11 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
+locals {
+  write_access = [for user in var.users_with_write_access : "*${user}"]
+  read_access  = [for user in var.users_with_read_access : "*${user}"]
+}
+
 
 resource "aws_secretsmanager_secret" "secret" {
   description = var.description
@@ -36,7 +41,7 @@ resource "aws_secretsmanager_secret_policy" "policy" {
         }
         Condition = {
           StringLike = {
-            "aws:userId" = var.users_with_read_access
+            "aws:userId" = local.write_access
             "aws:PrincipalArn" = var.iam_roles_read_access
           }
         }
@@ -52,7 +57,7 @@ resource "aws_secretsmanager_secret_policy" "policy" {
         }
         Condition = {
           StringNotLike = {
-            "aws:userId" = var.users_with_read_access
+            "aws:userId" = local.read_access
             "aws:PrincipalArn" = var.iam_roles_read_access
           }
         }
@@ -68,7 +73,7 @@ resource "aws_secretsmanager_secret_policy" "policy" {
         }
         Condition = {
           StringLike = {
-            "aws:userId" = concat(var.owners, var.users_with_write_access)
+            "aws:userId" = concat(local.write_access)
           }
         }
       }
